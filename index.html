@@ -1,323 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<title>Standard Package Prices for New Connection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800;900&display=swap");
-
-        *,
-        *::after,
-        *::before {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html,
-        body {
-            height: 100%;
-            min-height: 100vh;
-        }
-
-        body {
-            display: grid;
-            place-items: center;
-            font-family: "League Spartan", system-ui, sans-serif;
-            font-size: 1.1rem;
-            line-height: 1.2;
-            background-color: #212121;
-            color: #ddd;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        .main {
-            max-width: 75rem;
-            padding: 3em 1.5em;
-        }
-
-        .main__heading {
-            font-weight: 600;
-            font-size: 2.25em;
-            margin-bottom: 0.75em;
-            text-align: center;
-            color: #eceff1;
-        }
-
-        .cards {
-            position: relative;
-        }
-
-        .cards__inner {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2.5em;
-        }
-
-        .card {
-            --flow-space: 0.5em;
-            --hsl: var(--hue), var(--saturation), var(--lightness);
-         
-            padding: 1.5em 2em;
-            display: grid;
-            grid-template-rows: auto auto auto 1fr;
-            align-items: start;
-            gap: 1.25em;
-            color: #eceff1;
-            background-color: #2b2b2b;
-            border: 1px solid #eceff133;
-            border-radius: 15px;
-        }
-
-        .card:nth-child(1) {
-            --hue: 165;
-            --saturation: 82.26%;
-            --lightness: 51.37%;
-        }
-
-        .card:nth-child(2) {
-            --hue: 291.34;
-            --saturation: 95.9%;
-            --lightness: 61.76%;
-        }
-
-        .card:nth-child(3) {
-            --hue: 338.69;
-            --saturation: 100%;
-            --lightness: 48.04%;
-        }
-
-        .card__bullets {
-            line-height: 1.4;
-        }
-
-        .card__bullets li::before {
-            display: inline-block;
-            content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='16' title='check' fill='%23dddddd'%3E%3Cpath d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z' /%3E%3C/svg%3E");
-            transform: translatey(0.25ch);
-            margin-right: 1ch;
-        }
-
-        .card__heading {
-            font-size: 1.05em;
-            font-weight: 600;
-        }
-
-        .card__price {
-            font-size: 1.75em;
-            font-weight: 700;
-        }
-
-        .flow > * + * {
-            margin-top: var(--flow-space, 1.25em);
-        }
-
-        .cta {
-            display: block;
-            align-self: end;
-            margin: 1em 0 0.5em 0;
-            text-align: center;
-            text-decoration: none;
-            color: #fff;
-            background-color: #0d0d0d;
-            padding: 0.7em;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .overlay {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            user-select: none;
-            opacity: var(--opacity, 0);
-            -webkit-mask: radial-gradient(
-                25rem 25rem at var(--x) var(--y),
-                #000 1%,
-                transparent 50%
-            );
-            mask: radial-gradient(
-                25rem 25rem at var(--x) var(--y),
-                #000 1%,
-                transparent 50%
-            );
-            transition: 400ms mask ease;
-            will-change: mask;
-        }
-
-        .overlay .card {
-            background-color: hsla(var(--hsl), 0.15);
-            border-color: hsla(var(--hsl), 1);
-            box-shadow: 0 0 0 1px inset hsl(var(--hsl));
-        }
-
-        .overlay .cta {
-            display: block;
-            grid-row: -1;
-            width: 100%;
-            background-color: hsl(var(--hsl));
-            box-shadow: 0 0 0 1px hsl(var(--hsl));
-        }
-
-        :not(.overlay) > .card {
-            transition: 400ms background ease;
-            will-change: background;
-        }
-
-        :not(.overlay) > .card:hover {
-            --lightness: 95%;
-            background: hsla(var(--hsl), 0.1);
-        }
-    </style>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #1e1e1e;
+    color: #f1f1f1;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #2a2a2a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: none;
+    font-size: 15px;
+    background: #333;
+    color: #f1f1f1;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+.table th, .table td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: left;
+}
+.table th { background: #333; }
+.total {
+    font-weight: bold;
+    font-size: 16px;
+    color: #4caf50;
+}
+.note {
+    font-size: 13px;
+    color: #ffcc80;
+    margin-top: 4px;
+}
+textarea {
+    width: 100%;
+    height: 200px;
+    margin-top: 12px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    resize: none;
+    background: #333;
+    color: #f1f1f1;
+}
+button {
+    margin-top: 10px;
+    padding: 12px;
+    width: 100%;
+    background: #4caf50;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:hover {
+    background: #45a049;
+}
+</style>
 </head>
+
 <body>
-    <main class="main flow">
-        <h1 class="main__heading">Standard Package Pricing</h1>
-        <p style="font-size: 14px; color: #757272; font-weight: bold; text-align: center; font-family: Arial, sans-serif; margin-top: 10px;">
-            Kindly double-check the price list, as it may contain errors or be subject to updates at any time.
-        </p>
-        
-        
-        <div class="main__cards cards">
-            <div class="cards__inner">
-                <!-- 200Mbps Plan Cards -->
-                <div class="cards__card card">
-                    <h2 class="card__heading">Standard Package 200Mbps/mth</h2>
-                    <p class="card__price">Rs. 5,294</p>
-                    <ul role="list" class="card__bullets flow">
-                        <li>Usage charge: Rs. 1,469</li>
-                        <li>Dual Band Charge: Rs. 1,695</li>
-                        <li>Refundable Deposit: Rs. 1,000</li>
-                        <li>Drop Wire Charge: Rs. 1,130</li>
-                    </ul>
-                    <a href="#basic" class="card__cta cta">Good for Up to 10 devices</a>
-                </div>
+<div class="container">
+    <h2>Standard Package Prices for New Connection</h2>
 
-                <div class="cards__card card">
-                    <h2 class="card__heading">Standard Package 200Mbps/3mths</h2>
-                    <p class="card__price">Rs. 4,729</p>
-                    <ul role="list" class="card__bullets flow">
-                        <li>Usage charge: Rs. 3,729</li>
-                        <li>Dual Band Charge: Rs. 0</li>
-                        <li>Refundable Deposit: Rs. 1,000</li>
-                        <li>Drop Wire Charge: Rs. 0</li>
-                    </ul>
-                    <a href="#pro" class="card__cta cta">Good for Up to 10 devices</a>
-                </div>
+    <select id="speed">
+        <option value="200">200 Mbps</option>
+        <option value="250">250 Mbps</option>
+        <option value="300">300 Mbps</option>
+    </select>
 
-                <div class="cards__card card">
-                    <h2 class="card__heading">Standard Package 200Mbps/12mths</h2>
-                    <p class="card__price">Rs. 15,238</p>
-                    <ul role="list" class="card__bullets flow">
-                        <li>Usage charge: Rs. 14,238</li>
-                        <li>Dual Band Charge: Rs. 0</li>
-                        <li>Refundable Deposit: Rs. 1,000</li>
-                        <li>Drop Wire Charge: Rs. 0</li>
-                    </ul>
-                    <a href="#ultimate" class="card__cta cta">Good for Up to 10 devices</a>
-                </div>
+    <select id="duration">
+        <option value="1">1 Month</option>
+        <option value="3">3 Months</option>
+        <option value="12">12 Months</option>
+    </select>
 
-                <!-- 250Mbps Plan Cards -->
-                <div class="cards__card card">
-                    <h2 class="card__heading">Standard Package 250Mbps/mth</h2>
-                    <p class="card__price">Rs. 5,464</p>
-                    <ul role="list" class="card__bullets flow">
-                        <li>Usage charge: Rs. 1,639</li>
-                        <li>Dual Band Charge: Rs. 1,695</li>
-                        <li>Refundable Deposit: Rs. 1,000</li>
-                        <li>Drop Wire Charge: Rs. 1,130</li>
-                    </ul>
-                    <a href="#basic" class="card__cta cta">Good for Up to 15 devices</a>
-                </div>
+    <select id="stb">
+        <option value="0">No STB</option>
+        <option value="1">1 STB</option>
+        <option value="2">2 STB</option>
+        <option value="3">3 STB</option>
+    </select>
 
-                <div class="cards__card card">
-                    <h2 class="card__heading">Standard Package 250Mbps/3mths</h2>
-                    <p class="card__price">Rs. 5,068</p>
-                    <ul role="list" class="card__bullets flow">
-                        <li>Usage charge: Rs. 4,068</li>
-                        <li>Dual Band Charge: Rs. 0</li>
-                        <li>Refundable Deposit: Rs. 1,000</li>
-                        <li>Drop Wire Charge: Rs. 0</li>
-                    </ul>
-                    <a href="#pro" class="card__cta cta">Good for Up to 15 devices</a>
-                </div>
+    <select id="beacon">
+        <option value="0">No Beacon</option>
+        <option value="1">1 Beacon</option>
+        <option value="2">2 Beacons</option>
+    </select>
 
-                <div class="cards__card card">
-                    <h2 class="card__heading">Standard Package 250Mbps/12mths</h2>
-                    <p class="card__price">Rs. 16,594</p>
-                    <ul role="list" class="card__bullets flow">
-                        <li>Usage charge: Rs. 15594</li>
-                        <li>Dual Band Charge: Rs. 0</li>
-                        <li>Refundable Deposit: Rs. 1,000</li>
-                        <li>Drop Wire Charge: Rs. 0</li>
-                    </ul>
-                    <a href="#ultimate" class="card__cta cta">Good for Up to 15 devices</a>
-                </div>
-                  <!-- 300 Mbps Plans -->
-            <div class="card">
-                <h2 class="card__heading">Standard Package 300Mbps/mth</h2>
-                <p class="card__price">Rs. 5,577</p>
-                <ul role="list" class="card__bullets">
-                    <li>Usage charge: Rs. 1,752</li>
-                    <li>Dual Band Charge: Rs. 1,695</li>
-                    <li>Refundable Deposit: Rs. 1,000</li>
-                    <li>Drop Wire Charge: Rs. 1,130</li>
-                </ul>
-                <a href="#basic" class="card__cta cta">Good for Up to 20 devices</a>
-            </div>
+    <table class="table" id="result"></table>
+    <div id="notes"></div>
+    <textarea id="remark" readonly></textarea>
+    <button id="copyBtn">Copy Remark</button>
+</div>
 
-            <div class="card">
-                <h2 class="card__heading">Standard Package 300Mbps/3mths</h2>
-                <p class="card__price">Rs. 5,577</p>
-                <ul role="list" class="card__bullets">
-                    <li>Usage charge: Rs. 4,577</li>
-                    <li>Dual Band Charge: Rs. 0</li>
-                    <li>Refundable Deposit: Rs. 1,000</li>
-                    <li>Drop Wire Charge: Rs. 0</li>
-                </ul>
-                <a href="#pro" class="card__cta cta">Good for Up to 20 devices</a>
-            </div>
+<script>
+// ---------- DATA ----------
+const internet = {200:{1:1469,3:3729,12:14238},250:{1:1639,3:4068,12:15594},300:{1:1752,3:4577,12:17628}};
+const routerCharge = {1:1695,3:0,12:0};
+const dropWire = {1:1130,3:0,12:0};
+const primaryAct = {1:2260,3:1695,12:0};
+const secondaryAct = {1:2260,3:2260,12:2260};
+const tertiaryAct = {1:2260,3:2260,12:2260};
+const stbDeposit = 1000;
+const beaconActivation = {1:2825,3:2825,12:2825};
+const beaconDeposit = 1500;
 
-            <div class="card">
-                <h2 class="card__heading">Standard Package 300Mbps/12mths</h2>
-                <p class="card__price">Rs. 18,628</p>
-                <ul role="list" class="card__bullets">
-                    <li>Usage charge: Rs. 17628</li>
-                    <li>Dual Band Charge: Rs. 0</li>
-                    <li>Refundable Deposit: Rs. 1,000</li>
-                    <li>Drop Wire Charge: Rs. 0</li>
-                </ul>
-                <a href="#ultimate" class="card__cta cta">Good for Up to 20 devices</a>
-            </div>
-            </div>
-        </div>
-        <div class="overlay"></div>
-    </main>
-    
-    <script>
-        const cardsContainerInner = document.querySelector('.cards__inner');
-        const overlay = document.querySelector('.overlay');
+// ---------- ELEMENTS ----------
+const speedEl = document.getElementById("speed");
+const durationEl = document.getElementById("duration");
+const stbEl = document.getElementById("stb");
+const beaconEl = document.getElementById("beacon");
+const resultEl = document.getElementById("result");
+const notesEl = document.getElementById("notes");
+const remarkEl = document.getElementById("remark");
+const copyBtn = document.getElementById("copyBtn");
 
-        const applyOverlayMask = (event) => {
-            const { clientX: x, clientY: y } = event;
-            overlay.style = `--opacity: 1; --x: ${x}px; --y: ${y}px;`;
-            overlay.classList.add("overlay");
-        };
+// ---------- LOGIC ----------
+function calc(){
+    const s = speedEl.value;
+    const d = durationEl.value;
+    const stbCount = parseInt(stbEl.value);
+    const beaconCount = parseInt(beaconEl.value);
 
-        cardsContainerInner.addEventListener("mouseenter", applyOverlayMask);
-        const cards = document.querySelectorAll('.card');
-        cards.forEach((card) => {
-            card.addEventListener("mouseleave", () => {
-                overlay.style = `--opacity: 0;`;
-                overlay.classList.remove("overlay");
-            });
-        });
-    </script>
+    let total = 0;
+    let table = `<tr><th>Charge Type</th><th>Amount (Rs.)</th></tr>`;
+    let notes = "";
+    let remark = `Plan: ${s} Mbps / ${d} Month(s)\n--------------------------------`;
+
+    function addRow(label, value){
+        table += `<tr><td>${label}</td><td>${value}</td></tr>`;
+        total += value;
+        remark += `\n${label}: Rs. ${value}`;
+    }
+
+    addRow("Internet Usage Charge", internet[s][d]);
+    addRow("Dual Band Router Charge", routerCharge[d]);
+    addRow("Drop Wire / Installation", dropWire[d]);
+    addRow("Refundable Internet Deposit", 1000);
+
+    if(stbCount >= 1){
+        addRow("Primary STB Activation", primaryAct[d]);
+        addRow("Primary STB Deposit", stbDeposit);
+        notes += `<div class="note">STB Cable Charge: Rs.35 per meter (as applicable)</div>`;
+        remark += `\nNote: STB Cable Charge Rs.35 per meter`;
+    }
+    if(stbCount >= 2){
+        addRow("Secondary STB Activation", secondaryAct[d]);
+        addRow("Secondary STB Deposit", stbDeposit);
+    }
+    if(stbCount === 3){
+        addRow("Tertiary STB Activation", tertiaryAct[d]);
+        addRow("Tertiary STB Deposit", stbDeposit);
+    }
+
+    if(beaconCount >= 1){
+        addRow("Primary Beacon Activation", beaconActivation[d]);
+        addRow("Primary Beacon Deposit", beaconDeposit);
+        notes += `<div class="note">Beacon Cable Charge: Rs.50 per meter</div>
+                  <div class="note">Max 2 Beacons allowed</div>`;
+        remark += `\nNote: Beacon Cable Charge Rs.50 per meter\nNote: Maximum 2 Beacons allowed`;
+    }
+    if(beaconCount === 2){
+        addRow("Secondary Beacon Activation", beaconActivation[d]);
+        addRow("Secondary Beacon Deposit", beaconDeposit);
+    }
+
+    table += `<tr class="total"><td>Grand Total</td><td>${total}</td></tr>`;
+    remark += `\n--------------------------------\nGrand Total: Rs. ${total}`;
+
+    resultEl.innerHTML = table;
+    notesEl.innerHTML = notes;
+    remarkEl.value = remark.trim();
+}
+
+// ---------- EVENTS ----------
+[speedEl, durationEl, stbEl, beaconEl].forEach(el => el.addEventListener("change", calc));
+copyBtn.addEventListener("click", () => { remarkEl.select(); document.execCommand("copy"); });
+
+// Init
+calc();
+</script>
 </body>
 </html>
