@@ -2,212 +2,191 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Standard Package Prices for New Connection</title>
+<title> Standard & WiFi 6</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #1e1e1e;
-    color: #f1f1f1;
-    margin: 0;
-    padding: 20px;
-}
-.container {
-    max-width: 900px;
-    margin: auto;
-    background: #2a2a2a;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #000;
-}
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: normal;
-}
-select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 12px;
-    border-radius: 6px;
-    border: none;
-    font-size: 15px;
-    background: #333;
-    color: #f1f1f1;
-}
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-.table th, .table td {
-    border: 1px solid #444;
-    padding: 8px;
-    text-align: left;
-}
-.table th { background: #333; }
-.total {
-    font-weight: bold;
-    font-size: 16px;
-    color: #4caf50;
-}
-.note {
-    font-size: 13px;
-    color: #ffcc80;
-    margin-top: 4px;
-}
-textarea {
-    width: 100%;
-    height: 200px;
-    margin-top: 12px;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: none;
-    resize: none;
-    background: #333;
-    color: #f1f1f1;
-}
-button {
-    margin-top: 10px;
-    padding: 12px;
-    width: 100%;
-    background: #4caf50;
-    color: #000;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-button:hover {
-    background: #45a049;
-}
+body {font-family: Arial, sans-serif; background: #1e1e1e; color: #f1f1f1; margin: 0; padding: 20px;}
+.container {max-width: 1000px; margin: auto; background: #2a2a2a; padding: 20px; border-radius: 10px;}
+h2 {text-align:center; margin-bottom:20px;}
+select, textarea, button {width:100%; padding:10px; margin-top:10px; border-radius:6px; border:none; background:#333; color:#f1f1f1;}
+table {width:100%; border-collapse:collapse; margin-top:15px;}
+th, td {border:1px solid #444; padding:8px;}
+th {background:#333;}
+.total {color:#4caf50; font-weight:bold;}
+.note {font-size:13px; color:#ffcc80; margin-top:4px;}
+button {background:#4caf50; color:#000; font-weight:bold; cursor:pointer;}
+button:hover {background:#45a049;}
 </style>
 </head>
-
 <body>
 <div class="container">
-    <h2>Standard Package Prices for New Connection</h2>
+<h2>New Connection Packages</h2>
 
-    <select id="speed">
-        <option value="200">200 Mbps</option>
-        <option value="250">250 Mbps</option>
-        <option value="300">300 Mbps</option>
-    </select>
+<select id="planType">
+    <option value="standard">Standard Package</option>
+    <option value="wifi6">WiFi 6 Package</option>
+</select>
 
-    <select id="duration">
-        <option value="1">1 Month</option>
-        <option value="3">3 Months</option>
-        <option value="12">12 Months</option>
-    </select>
+<select id="speed"></select>
+<select id="duration"></select>
 
-    <select id="stb">
-        <option value="0">No STB</option>
-        <option value="1">1 STB</option>
-        <option value="2">2 STB</option>
-        <option value="3">3 STB</option>
-    </select>
+<select id="stb">
+    <option value="0">No STB</option>
+    <option value="1">1 STB</option>
+    <option value="2">2 STB</option>
+    <option value="3">3 STB</option>
+</select>
 
-    <select id="beacon">
-        <option value="0">No Beacon</option>
-        <option value="1">1 Beacon</option>
-        <option value="2">2 Beacons</option>
-    </select>
+<select id="beacon">
+    <option value="0">No Beacon</option>
+    <option value="1">1 Beacon</option>
+    <option value="2">2 Beacons</option>
+</select>
 
-    <table class="table" id="result"></table>
-    <div id="notes"></div>
-    <textarea id="remark" readonly></textarea>
-    <button id="copyBtn">Copy Remark</button>
+<table id="result"></table>
+<textarea id="remark" readonly></textarea>
+<button onclick="copyRemark()">Copy Remark</button>
 </div>
 
 <script>
-// ---------- DATA ----------
-const internet = {200:{1:1469,3:3729,12:14238},250:{1:1639,3:4068,12:15594},300:{1:1752,3:4577,12:17628}};
+// ---------------- DATA ----------------
+
+// Standard Package
+const standardInternet = {
+    200:{1:1469,3:3729,12:14238},
+    250:{1:1639,3:4068,12:15594},
+    300:{1:1752,3:4577,12:17628}
+};
 const routerCharge = {1:1695,3:0,12:0};
 const dropWire = {1:1130,3:0,12:0};
-const primaryAct = {1:2260,3:1695,12:0};
-const secondaryAct = {1:2260,3:2260,12:2260};
-const tertiaryAct = {1:2260,3:2260,12:2260};
-const stbDeposit = 1000;
-const beaconActivation = {1:2825,3:2825,12:2825};
-const beaconDeposit = 1500;
+const internetDeposit = 1000;
+const standardSTB = {
+    primaryAct:{1:2260,3:1695,12:0}, primaryDep:1000,
+    secondaryAct:{1:2260,3:2260,12:2260}, secondaryDep:1000,
+    tertiaryAct:{1:2260,3:2260,12:2260}, tertiaryDep:1000
+};
+const standardBeacon = {act:{1:2825,3:2825,12:2825}, dep:1500};
 
-// ---------- ELEMENTS ----------
+// WiFi 6 Package
+const wifi6Internet = {
+    200:{3:3899,12:14690}, 400:{3:4238,12:16385}, 500:{3:4746,12:18080}, 600:{3:5989,12:22600}
+};
+const wifi6STB = {
+    primaryAct:{3:1695,12:565}, primaryDep:1000,
+    secondaryAct:{3:2260,12:2260}, secondaryDep:1000,
+    tertiaryAct:{3:2260,12:2260}, tertiaryDep:1000
+};
+const wifi6Beacon = {act:{3:2825,12:2825}, dep:1500};
+const wifi6ONU = {rental:{3:1130,12:565}, deposit:1000};
+
+// ---------------- ELEMENTS ----------------
+const planTypeEl = document.getElementById("planType");
 const speedEl = document.getElementById("speed");
 const durationEl = document.getElementById("duration");
 const stbEl = document.getElementById("stb");
 const beaconEl = document.getElementById("beacon");
 const resultEl = document.getElementById("result");
-const notesEl = document.getElementById("notes");
 const remarkEl = document.getElementById("remark");
-const copyBtn = document.getElementById("copyBtn");
 
-// ---------- LOGIC ----------
+// ---------------- FUNCTIONS ----------------
+function loadSpeeds(){
+    speedEl.innerHTML="";
+    const data = planTypeEl.value==="wifi6"?wifi6Internet:standardInternet;
+    Object.keys(data).forEach(s=>{
+        speedEl.innerHTML+=`<option value="${s}">${s} Mbps</option>`;
+    });
+}
+
+function loadDurations(){
+    durationEl.innerHTML="";
+    if(planTypeEl.value==="standard") durationEl.innerHTML+=`<option value="1">1 Month</option>`;
+    durationEl.innerHTML+=`<option value="3">3 Months</option>`;
+    durationEl.innerHTML+=`<option value="12">12 Months</option>`;
+}
+
 function calc(){
+    const plan = planTypeEl.value;
     const s = speedEl.value;
     const d = durationEl.value;
     const stbCount = parseInt(stbEl.value);
     const beaconCount = parseInt(beaconEl.value);
 
-    let total = 0;
-    let table = `<tr><th>Charge Type</th><th>Amount (Rs.)</th></tr>`;
-    let notes = "";
-    let remark = `Plan: ${s} Mbps / ${d} Month(s)\n--------------------------------`;
+    const planInternet = plan==="wifi6"?wifi6Internet:standardInternet;
+    const planSTB = plan==="wifi6"?wifi6STB:standardSTB;
+    const planBeacon = plan==="wifi6"?wifi6Beacon:standardBeacon;
 
-    function addRow(label, value){
-        table += `<tr><td>${label}</td><td>${value}</td></tr>`;
-        total += value;
-        remark += `\n${label}: Rs. ${value}`;
+    let total=0;
+    let table=`<tr><th>Charge Type</th><th>Amount (Rs.)</th></tr>`;
+    let remark=`Plan: ${s} Mbps / ${d} Month(s)\n--------------------------------`;
+
+    const add=(label,val)=>{
+        table+=`<tr><td>${label}</td><td>${val}</td></tr>`;
+        total+=val;
+        remark+=`\n${label}: Rs. ${val}`;
+    };
+
+    // INTERNET
+    add("Internet Usage Charge", planInternet[s][d]);
+
+    // ROUTER / DROPWIRE / DEPOSIT
+    if(plan==="standard"){
+        add("Dual Band Router Charge", routerCharge[d]||0);
+        add("Drop Wire / Installation", dropWire[d]||0);
+        add("Refundable Internet Deposit", internetDeposit);
+    } else {
+        add("ONU Rental Charge", wifi6ONU.rental[d]||0);
+        add("ONU Deposit", wifi6ONU.deposit);
     }
 
-    addRow("Internet Usage Charge", internet[s][d]);
-    addRow("Dual Band Router Charge", routerCharge[d]);
-    addRow("Drop Wire / Installation", dropWire[d]);
-    addRow("Refundable Internet Deposit", 1000);
-
-    if(stbCount >= 1){
-        addRow("Primary STB Activation", primaryAct[d]);
-        addRow("Primary STB Deposit", stbDeposit);
-        notes += `<div class="note">STB Cable Charge: Rs.35 per meter (as applicable)</div>`;
-        remark += `\nNote: STB Cable Charge Rs.35 per meter`;
+    // STB
+    if(stbCount>=1){
+        add("Primary STB Activation", planSTB.primaryAct[d]||0);
+        add("Primary STB Deposit", planSTB.primaryDep);
+        remark+="\nNote: STB Cable Charge Rs.35 per meter";
     }
-    if(stbCount >= 2){
-        addRow("Secondary STB Activation", secondaryAct[d]);
-        addRow("Secondary STB Deposit", stbDeposit);
+    if(stbCount>=2){
+        add("Secondary STB Activation", planSTB.secondaryAct[d]||0);
+        add("Secondary STB Deposit", planSTB.secondaryDep);
     }
-    if(stbCount === 3){
-        addRow("Tertiary STB Activation", tertiaryAct[d]);
-        addRow("Tertiary STB Deposit", stbDeposit);
+    if(stbCount===3){
+        add("Tertiary STB Activation", planSTB.tertiaryAct[d]||0);
+        add("Tertiary STB Deposit", planSTB.tertiaryDep);
     }
 
-    if(beaconCount >= 1){
-        addRow("Primary Beacon Activation", beaconActivation[d]);
-        addRow("Primary Beacon Deposit", beaconDeposit);
-        notes += `<div class="note">Beacon Cable Charge: Rs.50 per meter</div>
-                  <div class="note">Max 2 Beacons allowed</div>`;
-        remark += `\nNote: Beacon Cable Charge Rs.50 per meter\nNote: Maximum 2 Beacons allowed`;
+    // BEACON
+    if(beaconCount>=1){
+        add("Primary Beacon Activation", planBeacon.act[d]||0);
+        add("Primary Beacon Deposit", planBeacon.dep);
+        remark+="\nNote: Beacon Cable Charge Rs.50 per meter\nNote: Maximum 2 Beacons allowed";
     }
-    if(beaconCount === 2){
-        addRow("Secondary Beacon Activation", beaconActivation[d]);
-        addRow("Secondary Beacon Deposit", beaconDeposit);
+    if(beaconCount===2){
+        add("Secondary Beacon Activation", planBeacon.act[d]||0);
+        add("Secondary Beacon Deposit", planBeacon.dep);
     }
 
-    table += `<tr class="total"><td>Grand Total</td><td>${total}</td></tr>`;
-    remark += `\n--------------------------------\nGrand Total: Rs. ${total}`;
+    table+=`<tr class="total"><td>Grand Total</td><td>${total}</td></tr>`;
+    remark+="\n--------------------------------\nGrand Total: Rs. "+total;
 
-    resultEl.innerHTML = table;
-    notesEl.innerHTML = notes;
-    remarkEl.value = remark.trim();
+    resultEl.innerHTML=table;
+    remarkEl.value=remark;
 }
 
-// ---------- EVENTS ----------
-[speedEl, durationEl, stbEl, beaconEl].forEach(el => el.addEventListener("change", calc));
-copyBtn.addEventListener("click", () => { remarkEl.select(); document.execCommand("copy"); });
+function copyRemark(){
+    remarkEl.select();
+    document.execCommand("copy");
+}
 
-// Init
+// ---------------- EVENTS ----------------
+planTypeEl.addEventListener("change",()=>{
+    loadSpeeds();
+    loadDurations();
+    calc();
+});
+[speedEl,durationEl,stbEl,beaconEl].forEach(el=>el.addEventListener("change",calc));
+
+// INIT
+loadSpeeds();
+loadDurations();
 calc();
 </script>
 </body>
