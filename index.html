@@ -2,45 +2,44 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title> Standard & WiFi 6</title>
+<title>Standard & WiFi 6</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {font-family: Arial, sans-serif; background: #1e1e1e; color: #f1f1f1; margin: 0; padding: 20px;}
-.container {max-width: 1000px; margin: auto; background: #2a2a2a; padding: 20px; border-radius: 10px;}
-h2 {text-align:center; margin-bottom:20px;}
-select, textarea, button {width:100%; padding:10px; margin-top:10px; border-radius:6px; border:none; background:#333; color:#f1f1f1;}
+body {font-family: Arial, sans-serif; background:#1e1e1e; color:#fff; padding:20px;}
+.container {max-width:1000px; margin:auto; background:#2a2a2a; padding:20px; border-radius:10px;}
+h2{text-align:center;}
+select, textarea, button {width:100%; padding:10px; margin-top:10px; border-radius:6px; border:none; background:#333; color:#fff;}
 table {width:100%; border-collapse:collapse; margin-top:15px;}
 th, td {border:1px solid #444; padding:8px;}
 th {background:#333;}
 .total {color:#4caf50; font-weight:bold;}
-.note {font-size:13px; color:#ffcc80; margin-top:4px;}
-button {background:#4caf50; color:#000; font-weight:bold; cursor:pointer;}
-button:hover {background:#45a049;}
+button {background:#4caf50; color:#000; font-weight:bold;}
 </style>
 </head>
+
 <body>
 <div class="container">
 <h2>New Connection Packages</h2>
 
 <select id="planType">
-    <option value="standard">Standard Package</option>
-    <option value="wifi6">WiFi 6 Package</option>
+  <option value="standard">Standard Package</option>
+  <option value="wifi6">WiFi 6 Package</option>
 </select>
 
 <select id="speed"></select>
 <select id="duration"></select>
 
 <select id="stb">
-    <option value="0">No STB</option>
-    <option value="1">1 STB</option>
-    <option value="2">2 STB</option>
-    <option value="3">3 STB</option>
+  <option value="0">No STB</option>
+  <option value="1">1 STB</option>
+  <option value="2">2 STB</option>
+  <option value="3">3 STB</option>
 </select>
 
 <select id="beacon">
-    <option value="0">No Beacon</option>
-    <option value="1">1 Beacon</option>
-    <option value="2">2 Beacons</option>
+  <option value="0">No Beacon</option>
+  <option value="1">1 Beacon</option>
+  <option value="2">2 Beacons</option>
 </select>
 
 <table id="result"></table>
@@ -49,32 +48,39 @@ button:hover {background:#45a049;}
 </div>
 
 <script>
-// ---------------- DATA ----------------
-
-// Standard Package
+// ---------------- STANDARD DATA ----------------
 const standardInternet = {
-    200:{1:1469,3:3729,12:14238},
-    250:{1:1639,3:4068,12:15594},
-    300:{1:1752,3:4577,12:17628}
+  200:{1:1469,3:3729,12:14238},
+  250:{1:1639,3:4068,12:15594},
+  300:{1:1752,3:4577,12:17628}
 };
 const routerCharge = {1:1695,3:0,12:0};
 const dropWire = {1:1130,3:0,12:0};
 const internetDeposit = 1000;
+
 const standardSTB = {
-    primaryAct:{1:2260,3:1695,12:0}, primaryDep:1000,
-    secondaryAct:{1:2260,3:2260,12:2260}, secondaryDep:1000,
-    tertiaryAct:{1:2260,3:2260,12:2260}, tertiaryDep:1000
+  primaryAct:{1:2260,3:1695,12:0}, primaryDep:1000,
+  secondaryAct:{1:2260,3:2260,12:2260}, secondaryDep:1000,
+  tertiaryAct:{1:2260,3:2260,12:2260}, tertiaryDep:1000
 };
 const standardBeacon = {act:{1:2825,3:2825,12:2825}, dep:1500};
 
-// WiFi 6 Package
-const wifi6Internet = {
-    200:{3:3899,12:14690}, 400:{3:4238,12:16385}, 500:{3:4746,12:18080}, 600:{3:5989,12:22600}
+// ---------------- WIFI 6 DATA ----------------
+const wifi6InternetOnly = {
+  200:{3:3899,12:14690},
+  400:{3:4238,12:16385},
+  500:{3:4746,12:18080},
+  600:{3:5989,12:22600}
+};
+const wifi6WithTV = {
+  1:{200:{3:4746,12:16950},400:{3:4972,12:18080},500:{3:5311,12:19775},600:{3:6554,12:24860}},
+  2:{400:{3:5481,12:19775},500:{3:5820,12:21470},600:{3:7063,12:26555}},
+  3:{500:{3:6215,12:22826},600:{3:7571,12:27911}}
 };
 const wifi6STB = {
-    primaryAct:{3:1695,12:565}, primaryDep:1000,
-    secondaryAct:{3:2260,12:2260}, secondaryDep:1000,
-    tertiaryAct:{3:2260,12:2260}, tertiaryDep:1000
+  primaryAct:{3:1695,12:565}, primaryDep:1000,
+  secondaryAct:{3:2260,12:2260}, secondaryDep:1000,
+  tertiaryAct:{3:2260,12:2260}, tertiaryDep:1000
 };
 const wifi6Beacon = {act:{3:2825,12:2825}, dep:1500};
 const wifi6ONU = {rental:{3:1130,12:565}, deposit:1000};
@@ -88,106 +94,94 @@ const beaconEl = document.getElementById("beacon");
 const resultEl = document.getElementById("result");
 const remarkEl = document.getElementById("remark");
 
-// ---------------- FUNCTIONS ----------------
+// ---------------- LOAD SPEEDS ----------------
 function loadSpeeds(){
-    speedEl.innerHTML="";
-    const data = planTypeEl.value==="wifi6"?wifi6Internet:standardInternet;
-    Object.keys(data).forEach(s=>{
-        speedEl.innerHTML+=`<option value="${s}">${s} Mbps</option>`;
+  speedEl.innerHTML="";
+  if(planTypeEl.value==="standard"){
+    Object.keys(standardInternet).forEach(s=>{
+      speedEl.innerHTML+=`<option value="${s}">${s} Mbps</option>`;
     });
+  } else {
+    [200,400,500,600].forEach(s=>{
+      speedEl.innerHTML+=`<option value="${s}-0">${s} Mbps (Internet Only)</option>`;
+      if(wifi6WithTV[1][s]) speedEl.innerHTML+=`<option value="${s}-1">${s} Mbps (Internet + 1 TV)</option>`;
+      if(wifi6WithTV[2] && wifi6WithTV[2][s]) speedEl.innerHTML+=`<option value="${s}-2">${s} Mbps (Internet + 2 TV)</option>`;
+      if(wifi6WithTV[3] && wifi6WithTV[3][s]) speedEl.innerHTML+=`<option value="${s}-3">${s} Mbps (Internet + 3 TV)</option>`;
+    });
+  }
 }
 
 function loadDurations(){
-    durationEl.innerHTML="";
-    if(planTypeEl.value==="standard") durationEl.innerHTML+=`<option value="1">1 Month</option>`;
-    durationEl.innerHTML+=`<option value="3">3 Months</option>`;
-    durationEl.innerHTML+=`<option value="12">12 Months</option>`;
+  durationEl.innerHTML="";
+  if(planTypeEl.value==="standard") durationEl.innerHTML+=`<option value="1">1 Month</option>`;
+  durationEl.innerHTML+=`<option value="3">3 Months</option>`;
+  durationEl.innerHTML+=`<option value="12">12 Months</option>`;
 }
 
+// ---------------- CALC ----------------
 function calc(){
-    const plan = planTypeEl.value;
-    const s = speedEl.value;
-    const d = durationEl.value;
-    const stbCount = parseInt(stbEl.value);
-    const beaconCount = parseInt(beaconEl.value);
+  const plan = planTypeEl.value;
+  const [speed,tv] = speedEl.value.split("-");
+  const d = durationEl.value;
+  const stbCount = parseInt(stbEl.value);
+  const beaconCount = parseInt(beaconEl.value);
 
-    const planInternet = plan==="wifi6"?wifi6Internet:standardInternet;
-    const planSTB = plan==="wifi6"?wifi6STB:standardSTB;
-    const planBeacon = plan==="wifi6"?wifi6Beacon:standardBeacon;
+  let total=0;
+  let table=`<tr><th>Charge</th><th>Amount</th></tr>`;
+  let remark=`Plan: ${speed} Mbps / ${d} Month(s)\n-------------------`;
 
-    let total=0;
-    let table=`<tr><th>Charge Type</th><th>Amount (Rs.)</th></tr>`;
-    let remark=`Plan: ${s} Mbps / ${d} Month(s)\n--------------------------------`;
+  const add=(l,v)=>{
+    table+=`<tr><td>${l}</td><td>${v}</td></tr>`;
+    total+=v;
+    remark+=`\n${l}: Rs. ${v}`;
+  };
 
-    const add=(label,val)=>{
-        table+=`<tr><td>${label}</td><td>${val}</td></tr>`;
-        total+=val;
-        remark+=`\n${label}: Rs. ${val}`;
-    };
+  if(plan==="wifi6"){
+    if(tv==0) add("Internet Usage (Internet Only)", wifi6InternetOnly[speed][d]);
+    else add(`Internet Usage (Internet + ${tv} TV)`, wifi6WithTV[tv][speed][d]);
+    add("ONU Rental", wifi6ONU.rental[d]);
+    add("ONU Deposit", wifi6ONU.deposit);
 
-    // INTERNET
-    add("Internet Usage Charge", planInternet[s][d]);
+    if(stbCount>=1){ add("Primary STB Activation", wifi6STB.primaryAct[d]||0); add("Primary STB Deposit", wifi6STB.primaryDep); }
+    if(stbCount>=2){ add("Secondary STB Activation", wifi6STB.secondaryAct[d]||0); add("Secondary STB Deposit", wifi6STB.secondaryDep); }
+    if(stbCount===3){ add("Tertiary STB Activation", wifi6STB.tertiaryAct[d]||0); add("Tertiary STB Deposit", wifi6STB.tertiaryDep); }
 
-    // ROUTER / DROPWIRE / DEPOSIT
-    if(plan==="standard"){
-        add("Dual Band Router Charge", routerCharge[d]||0);
-        add("Drop Wire / Installation", dropWire[d]||0);
-        add("Refundable Internet Deposit", internetDeposit);
-    } else {
-        add("ONU Rental Charge", wifi6ONU.rental[d]||0);
-        add("ONU Deposit", wifi6ONU.deposit);
-    }
+    if(beaconCount>=1){ add("Primary Beacon Activation", wifi6Beacon.act[d]); add("Primary Beacon Deposit", wifi6Beacon.dep); }
+    if(beaconCount===2){ add("Secondary Beacon Activation", wifi6Beacon.act[d]); add("Secondary Beacon Deposit", wifi6Beacon.dep); }
 
-    // STB
-    if(stbCount>=1){
-        add("Primary STB Activation", planSTB.primaryAct[d]||0);
-        add("Primary STB Deposit", planSTB.primaryDep);
-        remark+="\nNote: STB Cable Charge Rs.35 per meter";
-    }
-    if(stbCount>=2){
-        add("Secondary STB Activation", planSTB.secondaryAct[d]||0);
-        add("Secondary STB Deposit", planSTB.secondaryDep);
-    }
-    if(stbCount===3){
-        add("Tertiary STB Activation", planSTB.tertiaryAct[d]||0);
-        add("Tertiary STB Deposit", planSTB.tertiaryDep);
-    }
+  } else {
+    // Standard Internet
+    add("Internet Usage", standardInternet[speed][d]);
+    add("Router Charge", routerCharge[d]||0);
+    add("Drop Wire", dropWire[d]||0);
+    add("Refundable Deposit", internetDeposit);
 
-    // BEACON
-    if(beaconCount>=1){
-        add("Primary Beacon Activation", planBeacon.act[d]||0);
-        add("Primary Beacon Deposit", planBeacon.dep);
-        remark+="\nNote: Beacon Cable Charge Rs.50 per meter\nNote: Maximum 2 Beacons allowed";
-    }
-    if(beaconCount===2){
-        add("Secondary Beacon Activation", planBeacon.act[d]||0);
-        add("Secondary Beacon Deposit", planBeacon.dep);
-    }
+    // Only show STB if selected
+    if(stbCount>=1){ add("Primary STB Activation", standardSTB.primaryAct[d]||0); add("Primary STB Deposit", standardSTB.primaryDep); }
+    if(stbCount>=2){ add("Secondary STB Activation", standardSTB.secondaryAct[d]||0); add("Secondary STB Deposit", standardSTB.secondaryDep); }
+    if(stbCount===3){ add("Tertiary STB Activation", standardSTB.tertiaryAct[d]||0); add("Tertiary STB Deposit", standardSTB.tertiaryDep); }
 
-    table+=`<tr class="total"><td>Grand Total</td><td>${total}</td></tr>`;
-    remark+="\n--------------------------------\nGrand Total: Rs. "+total;
+    // Only show Beacon if selected
+    if(beaconCount>=1){ add("Primary Beacon Activation", standardBeacon.act[d]); add("Primary Beacon Deposit", standardBeacon.dep); }
+    if(beaconCount===2){ add("Secondary Beacon Activation", standardBeacon.act[d]); add("Secondary Beacon Deposit", standardBeacon.dep); }
+  }
 
-    resultEl.innerHTML=table;
-    remarkEl.value=remark;
+  table+=`<tr class="total"><td>Grand Total</td><td>${total}</td></tr>`;
+  remark+=`\n-------------------\nGrand Total: Rs. ${total}`;
+
+  resultEl.innerHTML=table;
+  remarkEl.value=remark;
 }
 
-function copyRemark(){
-    remarkEl.select();
-    document.execCommand("copy");
-}
+// ---------------- COPY ----------------
+function copyRemark(){ remarkEl.select(); document.execCommand("copy"); }
 
 // ---------------- EVENTS ----------------
-planTypeEl.addEventListener("change",()=>{
-    loadSpeeds();
-    loadDurations();
-    calc();
-});
-[speedEl,durationEl,stbEl,beaconEl].forEach(el=>el.addEventListener("change",calc));
+planTypeEl.addEventListener("change",()=>{loadSpeeds();loadDurations();calc();});
+[speedEl,durationEl,stbEl,beaconEl].forEach(e=>e.addEventListener("change",calc));
 
 // INIT
-loadSpeeds();
-loadDurations();
-calc();
+loadSpeeds(); loadDurations(); calc();
 </script>
 </body>
 </html>
